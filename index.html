@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Wedding</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body,
+      html {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 3;
+      }
+      .navbar .brand {
+        font-family: "Great Vibes", cursive;
+        font-size: 28px;
+        color: white;
+      }
+      .navbar .menu,
+      .navbar .social {
+        display: flex;
+        align-items: center;
+      }
+      .navbar .menu {
+        gap: 30px;
+        position: relative;
+      }
+      .navbar .menu ul {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+      .navbar .menu ul li a {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .navbar .menu ul li a:hover {
+        color: #ffd1dc;
+      }
+      .navbar .social a {
+        margin-left: 20px;
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+        transition: color 0.3s;
+      }
+      .navbar .social a:hover {
+        color: #ffd1dc;
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+      .hamburger span {
+        height: 3px;
+        width: 25px;
+        background: white;
+        margin-bottom: 5px;
+        border-radius: 3px;
+      }
+
+      /* JUMBOTRON / HERO */
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        background: linear-gradient(
+            rgba(255, 98, 179, 0.721),
+            rgba(0, 0, 0, 0.772)
+          ),
+          url("img/hero_square.jpeg");
+        background-position: center top;
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+      }
+      .content h1 {
+        font-size: 56px;
+        margin-bottom: 10px;
+      }
+      .content h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+      .content p {
+        font-size: 20px;
+        margin-bottom: 30px;
+      }
+      .content button {
+        padding: 12px 30px;
+        font-size: 18px;
+        background: rgb(232, 39, 116);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .content button:hover {
+        background: #ddd;
+      }
+
+      /* CALENDAR SECTION */
+      .calendar-section {
+        padding: 50px;
+        background: #111;
+        color: #fff;
+      }
+      .calendar-container {
+        max-width: 400px;
+        margin: 0 auto;
+        background: #222;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .calendar-header h3 {
+        font-size: 1.5rem;
+      }
+      .calendar-header button {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        gap: 5px;
+      }
+      .calendar-grid div {
+        padding: 10px 0;
+      }
+      .calendar-grid .empty {
+        background: transparent;
+      }
+      .calendar-grid .day {
+        background: #333;
+        border-radius: 5px;
+      }
+      .calendar-grid .day:hover {
+        background: #444;
+      }
+      .calendar-grid .today {
+        background: #555;
+        box-shadow: 0 0 5px #ff69b4;
+      }
+
+      .gallery {
+        text-align: center;
+        padding: 50px 0;
+        background-color: #f5f5f5;
+      }
+
+      .gallery h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        font-family: "Arial", sans-serif;
+        color: #333;
+      }
+
+      .slider-container {
+        position: relative;
+        width: 80%;
+        margin: 0 auto;
+        overflow: hidden;
+        cursor: grab; /* Pointer cursor for dragging */
+      }
+
+      .slider {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+        cursor: grab; /* Makes it clear it can be dragged */
+      }
+
+      .slider img {
+        width: 200px;
+        height: 300px;
+        object-fit: cover;
+        margin: 0 10px;
+        border-radius: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .slider img {
+          width: 150px;
+          height: 225px;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 15px 20px;
+        }
+        .navbar .menu ul,
+        .navbar .social {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .navbar.active .menu ul {
+          display: flex;
+          flex-direction: column;
+          background: rgba(0, 0, 0, 0.8);
+          position: absolute;
+          top: 65px;
+          left: 50%;
+          transform: translateX(-50%);
+          gap: 15px;
+          padding: 20px;
+          border-radius: 10px;
+        }
+        .navbar.active .social {
+          display: flex;
+          position: absolute;
+          top: 65px;
+          right: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="brand">H&amp;A</div>
+      <div class="menu">
+        <div class="hamburger" onclick="toggleNav()">
+          <span></span><span></span><span></span>
+        </div>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="social">
+        <a href="#">Instagram</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div class="content">
+        <h1>We Are Best Couple</h1>
+        <h2>Haris &amp; Anggry</h2>
+        <p>How long has it been</p>
+        <button><span id="duration"></span></button>
+      </div>
+    </div>
+
+    <!-- CALENDAR SECTION -->
+    <section class="calendar-section">
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button class="prev" onclick="changeMonth(-1)">&#10094;</button>
+          <h3 id="monthYear"></h3>
+          <button class="next" onclick="changeMonth(1)">&#10095;</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <h2>Our Special Moments</h2>
+      <div class="slider-container">
+        <button class="slider-btn prev-btn" onclick="moveSlide(-1)">
+          &#10094;
+        </button>
+        <div class="slider" id="slider">
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+          <img
+            src="img/jeremy-bishop-tqG48KOMKfY-unsplash.jpg"
+            alt="Moment 1"
+          />
+        </div>
+        <button class="slider-btn next-btn" onclick="moveSlide(1)">
+          &#10095;
+        </button>
+      </div>
+    </section>
+
+    <script>
+      const calendarGrid = document.getElementById("calendarGrid");
+      const monthYear = document.getElementById("monthYear");
+      let today = new Date();
+      let currentMonth = today.getMonth();
+      let currentYear = today.getFullYear();
+
+      function renderCalendar(month, year) {
+        calendarGrid.innerHTML = "";
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        monthYear.textContent = `${months[month]} ${year}`;
+        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach((day) => {
+          let div = document.createElement("div");
+          div.textContent = day;
+          calendarGrid.appendChild(div);
+        });
+        for (let i = 0; i < firstDay; i++) {
+          let empty = document.createElement("div");
+          empty.classList.add("empty");
+          calendarGrid.appendChild(empty);
+        }
+        for (let d = 1; d <= daysInMonth; d++) {
+          let cell = document.createElement("div");
+          cell.textContent = d;
+          cell.classList.add("day");
+          if (
+            d === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+          ) {
+            cell.classList.add("today");
+          }
+          calendarGrid.appendChild(cell);
+        }
+      }
+      function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        } else if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        renderCalendar(currentMonth, currentYear);
+      }
+      document.addEventListener("DOMContentLoaded", () =>
+        renderCalendar(currentMonth, currentYear)
+      );
+      function toggleNav() {
+        document.querySelector(".navbar").classList.toggle("active");
+      }
+
+      const slider = document.getElementById("slider");
+      let isMouseDown = false;
+      let startX;
+      let scrollLeft;
+
+      slider.addEventListener("mousedown", (e) => {
+        isMouseDown = true;
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+        slider.style.cursor = "grabbing"; // Change cursor to grabbing when dragging
+      });
+
+      slider.addEventListener("mouseleave", () => {
+        isMouseDown = false;
+        slider.style.cursor = "grab"; // Change cursor back to grab when mouse leaves
+      });
+
+      slider.addEventListener("mouseup", () => {
+        isMouseDown = false;
+        slider.style.cursor = "grab"; // Change cursor back to grab when mouse is released
+      });
+
+      slider.addEventListener("mousemove", (e) => {
+        if (!isMouseDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; // Multiplied to control speed of scrolling
+        slider.scrollLeft = scrollLeft - walk;
+      });
+
+      // Menghitung durasi
+      const startDate = new Date("2025-01-24"); // Ganti dengan tanggal mulai hubungan Anda
+
+      // Menghitung total tahun, bulan, dan hari
+
+      let years = today.getFullYear() - startDate.getFullYear();
+
+      let months = today.getMonth() - startDate.getMonth();
+
+      let days = today.getDate() - startDate.getDate();
+
+      // Jika bulan negatif, kurangi satu tahun dan tambahkan 12 bulan
+
+      if (months < 0) {
+        years--;
+
+        months += 12;
+      }
+
+      // Jika hari negatif, kurangi satu bulan dan tambahkan jumlah hari dalam bulan sebelumnya
+
+      if (days < 0) {
+        months--;
+
+        const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+
+        days += lastMonth.getDate();
+      }
+
+      // Menampilkan durasi
+
+      let durationText = "";
+
+      if (years > 0) {
+        durationText += `${years} Tahun `;
+      }
+
+      if (months > 0 || years > 0) {
+        // Tampilkan bulan jika sudah ada tahun
+
+        durationText += `${months} Bulan `;
+      }
+
+      durationText += `${days} Hari`;
+
+      document.getElementById("duration").innerText = durationText.trim();
+    </script>
+  </body>
+</html>
